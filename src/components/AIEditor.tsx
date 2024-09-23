@@ -42,7 +42,7 @@ const AIEditor = () => {
   };
 
   // Create the debounced version of the fetchSuggestion function
-  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 500), []);
+  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 1000), []);
 
   return (
     <div>
