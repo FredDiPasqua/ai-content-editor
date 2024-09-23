@@ -1,25 +1,30 @@
-"use client";
-
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
+import { debounce } from '../utils/utils';  // Import the debounce function
 
 const AIEditor = () => {
   const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const handleInputChange = async (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+  // Regular input change handler that updates the state immediately
+  const handleContentChange = (e) => {
     const newText = e.target.value;
-    setContent(newText);
+    setContent(newText);  // Update state immediately
+    debouncedFetchSuggestion(newText);  // Call the debounced function
+  };
 
-    // Send the input to the OpenAI API for a suggestion
+  // Debounced function for API call
+  const fetchSuggestion = async (text) => {
+    if (!text) return;
+
+    setLoading(true);
     try {
-      setLoading(true);
       const response = await fetch('/api/openai', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text: newText }),
+        body: JSON.stringify({ text }),
       });
 
       const data = await response.json();
@@ -36,12 +41,15 @@ const AIEditor = () => {
     }
   };
 
+  // Create the debounced version of the fetchSuggestion function
+  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 500), []);
+
   return (
     <div>
       <textarea
         placeholder="Start writing your blog post..."
         value={content}
-        onChange={handleInputChange}
+        onChange={handleContentChange}  // Call the immediate state update function
         rows={10}
         cols={50}
       />
