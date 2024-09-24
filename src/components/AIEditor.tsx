@@ -1,22 +1,15 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';  // Make sure useEffect is imported
 import { debounce } from '../utils/utils';  // Import the debounce function
 
-const AIEditor = () => {
-  const [content, setContent] = useState('');
+const AIEditor = ({ prompt, onContentChange }) => {
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Regular input change handler that updates the state immediately
-  const handleContentChange = (e) => {
-    const newText = e.target.value;
-    setContent(newText);  // Update state immediately
-    debouncedFetchSuggestion(newText);  // Call the debounced function
-  };
+  // API call to fetch AI suggestion
+  const fetchSuggestion = async () => {
+    if (!prompt) return;
 
-  // Debounced function for API call
-  const fetchSuggestion = async (text) => {
-    if (!text) return;
-
+    console.log('Fetching suggestion for prompt:', prompt);  // Log the prompt
     setLoading(true);
     try {
       const response = await fetch('/api/openai', {
@@ -24,7 +17,7 @@ const AIEditor = () => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ text }),
+        body: JSON.stringify({ prompt }),  // Send the full prompt
       });
 
       const data = await response.json();
@@ -41,18 +34,25 @@ const AIEditor = () => {
     }
   };
 
-  // Create the debounced version of the fetchSuggestion function
-  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 1000), []);
+  // Debounced fetchSuggestion function with 1000ms delay
+  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 2000), [prompt]);
+
+  // Trigger API call when the prompt changes
+  useEffect(() => {
+    debouncedFetchSuggestion();  // Call the debounced function
+  }, [prompt]);
 
   return (
     <div>
+      {/* Text input box */}
       <textarea
         placeholder="Start writing your blog post..."
-        value={content}
-        onChange={handleContentChange}  // Call the immediate state update function
+        onChange={onContentChange}  // Call parent handler on content change
         rows={10}
         cols={50}
       />
+
+      {/* AI suggestions box */}
       <div className="suggestions-box">
         {loading ? (
           <p>Loading AI suggestion...</p>

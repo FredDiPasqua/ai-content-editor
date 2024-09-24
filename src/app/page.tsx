@@ -7,42 +7,36 @@ import AIEditor from '../components/AIEditor';
 import '../styles/globals.css';
 
 const IndexPage = () => {
-  const [instructions, setInstructions] = useState('Write your blog post here. The AI will assist with suggestions and auto-completion.');
-  const [style, setStyle] = useState('formal'); // Control the selected writing style
-  const [showSuggestion, setShowSuggestion] = useState(false); // Show AI suggestion box
-  const [aiResponse, setAiResponse] = useState(''); // Store the AI response
-  const apiKey = process.env.NEXT_PUBLIC_COHERE_API_KEY;
+  const [instructions, setInstructions] = useState(''); // State for input text
+  const [style, setStyle] = useState('formal'); // State for writing style
+  const [prompt, setPrompt] = useState(''); // Store the final prompt
 
-  // Load saved content from localStorage when the component mounts
-  useEffect(() => {
-    // Load saved content from localStorage when the component mounts
-    const savedInstructions = localStorage.getItem('instructions');
-    if (savedInstructions) {
-      setInstructions(savedInstructions);
-    }
-  }, []);
-  
-  useEffect(() => {
-    // Save content to localStorage every time the instructions change
-    localStorage.setItem('instructions', instructions);
-  }, [instructions]);
-  
-
-  // Handle input changes
+  // Handle input changes (user typing)
   const handleInputChange = (e) => {
-    setInstructions(e.target.value);
-    if (!showSuggestion) {
-      setShowSuggestion(true);
-    }
+    const newInstructions = e.target.value;
+    console.log('User input:', newInstructions);  // Log input value
+    setInstructions(newInstructions);  // Update instructions state
+
+    // Build the new prompt with the updated instructions
+    const newPrompt = buildCustomPrompt(newInstructions);
+    console.log('Built prompt:', newPrompt);  // Log the built prompt
+    setPrompt(newPrompt);  // Update the prompt state
   };
 
   // Handle writing style change
   const handleStyleChange = (e) => {
     setStyle(e.target.value);
+    const newPrompt = buildCustomPrompt(instructions);  // Rebuild prompt with the current instructions
+    console.log('New style applied, prompt updated:', newPrompt);
+    setPrompt(newPrompt);  // Update the prompt state
   };
 
   // Build a custom prompt based on the selected style
-  const buildCustomPrompt = () => {
+  const buildCustomPrompt = (instructions) => {
+    if (!instructions.trim()) {
+      return `Please provide some content to generate suggestions.`;
+    }
+
     switch (style) {
       case 'formal':
         return `Write a formal version of the following content: ${instructions}`;
@@ -61,58 +55,13 @@ const IndexPage = () => {
     }
   };
 
-  // Fetch AI suggestions using the customized prompt
-  const getAISuggestions = async () => {
-    const prompt = buildCustomPrompt();
-  
-    console.log('Prompt being sent to API:', prompt);
-  
-    try {
-      const response = await fetch('/api/openai', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt }),  // Ensure 'prompt' is sent here
-      });
-  
-      const data = await response.json();
-      setAiResponse(data.suggestion || 'Error generating suggestion');
-    } catch (error) {
-      setAiResponse('Failed to generate suggestion. Please try again.');
-    }
-  };
-  
-  
-  
-  
-  
-
-  // Trigger the AI suggestions when the input changes
-  useEffect(() => {
-    if (instructions) {
-      getAISuggestions();
-    }
-  }, [instructions, style]);
-
   return (
-    <CopilotKit publicApiKey={apiKey}>
+    <CopilotKit publicApiKey={process.env.NEXT_PUBLIC_COHERE_API_KEY}>
       <div className="container">
         <CopilotSidebar instructions={instructions} defaultOpen={true}>
           <h1>AI Content Editor</h1>
           <p className="subtitle">Start writing your blog post, and the AI will assist you.</p>
 
-          <label htmlFor="instructions">Custom AI Instructions:</label>
-          <input
-            type="text"
-            id="instructions"
-            value={instructions}
-            onChange={handleInputChange}
-            placeholder="Enter custom AI instructions"
-            className="input-box"
-          />
-
-          {/* Dropdown for selecting AI suggestion style */}
           <label htmlFor="style">Choose Writing Style:</label>
           <select id="style" value={style} onChange={handleStyleChange} className="input-box">
             <option value="formal">Formal</option>
@@ -123,16 +72,9 @@ const IndexPage = () => {
             <option value="action-movie">Action Movie Creative</option>
           </select>
 
-          <AIEditor />
+          {/* Pass the full prompt and content change handler to AIEditor */}
+          <AIEditor prompt={prompt} onContentChange={handleInputChange} />
         </CopilotSidebar>
-
-        {/* Render AI Suggestion Box */}
-        {showSuggestion && (
-          <div className="suggestions-box">
-            <h4>AI Suggestion ({style} style):</h4>
-            <p>{aiResponse}</p>
-          </div>
-        )}
       </div>
     </CopilotKit>
   );
