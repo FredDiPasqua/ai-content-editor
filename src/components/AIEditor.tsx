@@ -1,15 +1,16 @@
-import React, { useState, useCallback, useEffect } from 'react';  // Make sure useEffect is imported
-import { debounce } from '../utils/utils';  // Import the debounce function
+import React, { useState, useCallback, useEffect } from 'react';
+import { debounce } from '../utils/utils';  // Ensure the debounce function is correctly imported
 
 const AIEditor = ({ prompt, onContentChange }) => {
+  const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // API call to fetch AI suggestion
-  const fetchSuggestion = async () => {
-    if (!prompt) return;
+  // Debounced API call function
+  const fetchSuggestion = async (currentPrompt) => {
+    if (!currentPrompt) return;
 
-    console.log('Fetching suggestion for prompt:', prompt);  // Log the prompt
+    console.log('Fetching suggestion for prompt:', currentPrompt);  // Log the current prompt
     setLoading(true);
     try {
       const response = await fetch('/api/openai', {
@@ -17,7 +18,7 @@ const AIEditor = ({ prompt, onContentChange }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt }),  // Send the full prompt
+        body: JSON.stringify({ prompt: currentPrompt }),  // Send the prompt in the body
       });
 
       const data = await response.json();
@@ -34,25 +35,33 @@ const AIEditor = ({ prompt, onContentChange }) => {
     }
   };
 
-  // Debounced fetchSuggestion function with 1000ms delay
-  const debouncedFetchSuggestion = useCallback(debounce(fetchSuggestion, 2000), [prompt]);
+  // Debounce to reduce excessive API calls
+  const debouncedFetchSuggestion = useCallback(debounce((currentPrompt) => {
+    fetchSuggestion(currentPrompt);  // Pass the prompt to fetchSuggestion
+  }, 1000), []);  // Empty dependency array, so the debounced function is only created once
 
-  // Trigger API call when the prompt changes
+  // Trigger debounced API call when the prompt changes
   useEffect(() => {
-    debouncedFetchSuggestion();  // Call the debounced function
-  }, [prompt]);
+    if (prompt) {
+      debouncedFetchSuggestion(prompt);  // Call the debounced function with the latest prompt
+    }
+  }, [prompt, debouncedFetchSuggestion]);
 
   return (
     <div>
-      {/* Text input box */}
+      {/* Input box */}
       <textarea
         placeholder="Start writing your blog post..."
-        onChange={onContentChange}  // Call parent handler on content change
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value);
+          onContentChange(e);  // Ensure the parent component gets the update
+        }}
         rows={10}
         cols={50}
       />
 
-      {/* AI suggestions box */}
+      {/* AI suggestion box */}
       <div className="suggestions-box">
         {loading ? (
           <p>Loading AI suggestion...</p>

@@ -1,15 +1,15 @@
 "use client";
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { CopilotKit } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import AIEditor from '../components/AIEditor';
 import '../styles/globals.css';
 
 const IndexPage = () => {
-  const [instructions, setInstructions] = useState(''); // State for input text
-  const [style, setStyle] = useState('formal'); // State for writing style
-  const [prompt, setPrompt] = useState(''); // Store the final prompt
+  const [instructions, setInstructions] = useState('');  // State for input text
+  const [style, setStyle] = useState('formal');  // State for writing style
+  const [prompt, setPrompt] = useState('');  // Store the final prompt
 
   // Handle input changes (user typing)
   const handleInputChange = (e) => {
@@ -17,26 +17,28 @@ const IndexPage = () => {
     console.log('User input:', newInstructions);  // Log input value
     setInstructions(newInstructions);  // Update instructions state
 
-    // Build the new prompt with the updated instructions
-    const newPrompt = buildCustomPrompt(newInstructions);
-    console.log('Built prompt:', newPrompt);  // Log the built prompt
-    setPrompt(newPrompt);  // Update the prompt state
+    // Only build a new prompt if there are instructions (non-empty)
+    if (newInstructions.trim()) {
+      const newPrompt = buildCustomPrompt(newInstructions); // Call the builder for each style change
+      console.log('Built prompt:', newPrompt);  // Log the built prompt
+      setPrompt(newPrompt);  // Update the prompt state
+    } else {
+      setPrompt("");  // Clear the prompt if no text is present
+    }
   };
 
   // Handle writing style change
   const handleStyleChange = (e) => {
     setStyle(e.target.value);
-    const newPrompt = buildCustomPrompt(instructions);  // Rebuild prompt with the current instructions
-    console.log('New style applied, prompt updated:', newPrompt);
-    setPrompt(newPrompt);  // Update the prompt state
+    if (instructions.trim()) {
+      const newPrompt = buildCustomPrompt(instructions);  // Rebuild prompt with the current instructions
+      console.log('New style applied, prompt updated:', newPrompt);
+      setPrompt(newPrompt);  // Update the prompt state
+    }
   };
 
   // Build a custom prompt based on the selected style
   const buildCustomPrompt = (instructions) => {
-    if (!instructions.trim()) {
-      return `Please provide some content to generate suggestions.`;
-    }
-
     switch (style) {
       case 'formal':
         return `Write a formal version of the following content: ${instructions}`;
