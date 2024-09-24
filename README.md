@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Content Editor with CopilotKit
 
-## Getting Started
+## Overview
+This project is an AI-powered content editor built using **React**, **Next.js**, **Cohere API** for AI-powered suggestions, and **CopilotKit**. It provides users with writing assistance in various styles (e.g., formal, casual, creative, etc.). The app leverages a floating glass UI with dynamic prompts and real-time AI suggestions.
 
-First, run the development server:
+## Features
+- AI-powered content suggestions using Cohere API.
+- Multiple writing styles: formal, casual, creative, for kids, sci-fi, action movie.
+- Real-time feedback with debounce for efficient API calls.
+- Dynamic prompts based on user input and selected writing style.
+- A sleek, floating glass-style UI with deep space background.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## Project Structure
+- `src/app/`: Contains the main app layout, page structure, and API routes.
+  - `page.tsx`: The main page component.
+  - `api/`: API routes for handling requests to Cohere.
+- `src/components/`: Contains reusable components.
+  - `AIEditor.tsx`: Text editor component that sends input to the AI for suggestions.
+- `src/styles/globals.css`: Global CSS for styling, including Tailwind integration.
+- `public/`: Static assets like background images and icons.
+- `utils/`: Utility functions like the debounce logic.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Setup and Installation
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Prerequisites
+- **Node.js**: Ensure that Node.js is installed on your machine.
+- **Cohere API Key**: You'll need to obtain an API key from [Cohere](https://cohere.ai/).
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+### Steps
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/your-username/ai-content-editor.git
+   cd ai-content-editor
+   ```
 
-## Learn More
+2. Install dependencies:
 
-To learn more about Next.js, take a look at the following resources:
+    ```npm install```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+3. Set up environment variables: Create a .env.local file in the root directory and add your API key:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+    ```bash
+    NEXT_PUBLIC_COHERE_API_KEY=<your-cohere-api-key>
+    ```
 
-## Deploy on Vercel
+4. Run the development server:
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+    ```bash
+    npm run dev
+    ```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+    Open http://localhost:3000 to view the app in the browser.
+    
+### Building for Production
+To build the application for production:
+
+    npm run build
+
+This will generate the production-ready version of your app inside the .next directory.
+
+### Technologies Used
+
+- React & Next.js: For building the frontend and server-side rendered React app.
+- Cohere API: For AI-powered suggestions based on user input.
+- CopilotKit: For integrating AI copilots into the application.
+- Tailwind CSS: For styling the application.
+- Debounce: To optimize the frequency of API calls.
+
+
+### Future Enhancements
+
+- Improve the AI suggestion generation with additional AI models.
+- Enhance the user interface with more interactive animations and visual effects.
+- Add more writing styles and customization options.
+License
+- This project is licensed under the MIT License - see the LICENSE file for details.
