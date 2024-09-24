@@ -50,14 +50,14 @@ const AIEditor = ({ prompt, onContentChange }) => {
 
   return (
     <div>
-      {/* Input box */}
+      {/* User input box */}
       <textarea
         className='textarea'
         placeholder="What's on your mind?"
         value={content}
         onChange={(e) => {
           setContent(e.target.value);
-          onContentChange(e);  // Ensure the parent component gets the update
+          onContentChange(e);  
         }}
         rows={10}
         cols={50}
@@ -66,7 +66,7 @@ const AIEditor = ({ prompt, onContentChange }) => {
       {/* AI suggestion box */}
       <div className="suggestions-box">
         {loading ? (
-          <p>Loading AI suggestion...</p>
+          <p>Loading creative AI...</p>
         ) : (
           suggestion && (
             <div className="suggestion">

@@ -2,7 +2,7 @@
 import '../styles/globals.css';
 
 export const metadata = {
-  title: 'AI Content Editor',
+  title: 'AI Storyteller',
   description: 'AI-powered content editor using CopilotKit',
 };
 

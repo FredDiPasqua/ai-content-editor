@@ -5,7 +5,7 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     console.log('Received body:', body);
 
-    const { prompt } = body;  // Destructure the 'prompt' from the body
+    const { prompt } = body;  // Separate the 'prompt' from the body
     console.log('Received prompt:', prompt);
 
     if (!prompt) {
@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const apiKey = process.env.COHERE_API_KEY;  // Ensure the correct API key is used
+    const apiKey = process.env.COHERE_API_KEY;  // API KEY validation
     if (!apiKey) {
       console.log('Cohere API key not set');
       return NextResponse.json({ error: 'API key not set' }, { status: 500 });
@@ -24,7 +24,7 @@ export async function POST(req: NextRequest) {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
-        Authorization: `Bearer ${apiKey}`,  // Pass the API key
+        Authorization: `Bearer ${apiKey}`, 
       },
       body: JSON.stringify({
         model: 'command-xlarge-nightly',
@@ -37,12 +37,12 @@ export async function POST(req: NextRequest) {
     const data = await response.json();
     console.log('Cohere API response:', data);
 
-    if (!data.text) {  // Adjusting for the correct response structure
+    if (!data.text) {  // Response validation
       console.error('Error: No text returned from Cohere');
       return NextResponse.json({ error: 'No text returned from Cohere' }, { status: 500 });
     }
 
-    // Return the suggestion from the Cohere response
+    // Return the Cohere response
     return NextResponse.json({ suggestion: data.text });
 
   } catch (error) {

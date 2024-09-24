@@ -1,6 +1,5 @@
-// src/pages/_app.tsx
 import Head from 'next/head';
-import '../styles/globals.css';  // Ensure the global CSS is also applied
+import '../styles/globals.css';  
 
 export default function MyApp({ Component, pageProps }) {
   return (

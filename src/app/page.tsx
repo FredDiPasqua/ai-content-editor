@@ -37,7 +37,7 @@ const IndexPage = () => {
     }
   };
 
-  // Build a custom prompt based on the selected style
+  // Append a style prompt to the user prompt
   const buildCustomPrompt = (instructions) => {
     switch (style) {
       case 'formal':
