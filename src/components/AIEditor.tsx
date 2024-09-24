@@ -1,5 +1,6 @@
 import React, { useState, useCallback, useEffect } from 'react';
 import { debounce } from '../utils/utils';  // Ensure the debounce function is correctly imported
+import '../styles/globals.css';
 
 const AIEditor = ({ prompt, onContentChange }) => {
   const [content, setContent] = useState('');
@@ -51,7 +52,8 @@ const AIEditor = ({ prompt, onContentChange }) => {
     <div>
       {/* Input box */}
       <textarea
-        placeholder="Start writing your blog post..."
+        className='textarea'
+        placeholder="What's on your mind?"
         value={content}
         onChange={(e) => {
           setContent(e.target.value);

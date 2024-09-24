@@ -60,24 +60,24 @@ const IndexPage = () => {
   return (
     <CopilotKit publicApiKey={process.env.NEXT_PUBLIC_COHERE_API_KEY}>
       <div className="container">
-        <CopilotSidebar instructions={instructions} defaultOpen={true}>
-          <h1>AI Content Editor</h1>
-          <p className="subtitle">Start writing your blog post, and the AI will assist you.</p>
+          <h1>AI Storyteller</h1>
+          <p className="subtitle">Start writing your ideas, and the AI will assist you.</p>
 
           <label htmlFor="style">Choose Writing Style:</label>
           <select id="style" value={style} onChange={handleStyleChange} className="input-box">
-            <option value="formal">Formal</option>
-            <option value="casual">Casual</option>
-            <option value="creative">Creative</option>
-            <option value="kids">Creative for Kids</option>
-            <option value="sci-fi">Sci-Fi Creative</option>
-            <option value="action-movie">Action Movie Creative</option>
+            <option value="formal">Formal Tone</option>
+            <option value="casual">Casual Tone</option>
+            <option value="creative">Creative suggestions</option>
+            <option value="kids">For Kids</option>
+            <option value="sci-fi">Sci-Fi Story</option>
+            <option value="action-movie">Action Movie Scene</option>
           </select>
 
           {/* Pass the full prompt and content change handler to AIEditor */}
           <AIEditor prompt={prompt} onContentChange={handleInputChange} />
-        </CopilotSidebar>
       </div>
+        <CopilotSidebar instructions={instructions} defaultOpen={false}>
+        </CopilotSidebar>
     </CopilotKit>
   );
 };
