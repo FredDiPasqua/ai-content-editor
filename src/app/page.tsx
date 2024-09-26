@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { CopilotKit } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import AIEditor from '../components/AIEditor';
@@ -11,34 +11,8 @@ const IndexPage = () => {
   const [style, setStyle] = useState('formal');  // State for writing style
   const [prompt, setPrompt] = useState('');  // Store the final prompt
 
-  // Handle input changes (user typing)
-  const handleInputChange = (e) => {
-    const newInstructions = e.target.value;
-    console.log('User input:', newInstructions);  // Log input value
-    setInstructions(newInstructions);  // Update instructions state
-
-    // Only build a new prompt if there are instructions (non-empty)
-    if (newInstructions.trim()) {
-      const newPrompt = buildCustomPrompt(newInstructions); // Call the builder for each style change
-      console.log('Built prompt:', newPrompt);  // Log the built prompt
-      setPrompt(newPrompt);  // Update the prompt state
-    } else {
-      setPrompt("");  // Clear the prompt if no text is present
-    }
-  };
-
-  // Handle writing style change
-  const handleStyleChange = (e) => {
-    setStyle(e.target.value);
-    if (instructions.trim()) {
-      const newPrompt = buildCustomPrompt(instructions);  // Rebuild prompt with the current instructions
-      console.log('New style applied, prompt updated:', newPrompt);
-      setPrompt(newPrompt);  // Update the prompt state
-    }
-  };
-
   // Build a custom prompt based on the selected style
-  const buildCustomPrompt = (instructions) => {
+  const buildCustomPrompt = (instructions, style) => {
     switch (style) {
       case 'formal':
         return `Write a formal version of the following content: ${instructions}`;
@@ -57,27 +31,51 @@ const IndexPage = () => {
     }
   };
 
+  // Handle input changes (user typing)
+  const handleInputChange = useCallback((e) => {
+    const newInstructions = e.target.value;
+    setInstructions(newInstructions);
+
+    // Only build a new prompt if there are instructions (non-empty)
+    if (newInstructions.trim()) {
+      const newPrompt = buildCustomPrompt(newInstructions, style);  // Call the builder for each style change
+      setPrompt(newPrompt);  // Update the prompt state
+    } else {
+      setPrompt("");  // Clear the prompt if no text is present
+    }
+  }, [style]);
+
+  // Handle writing style change
+  const handleStyleChange = useCallback((e) => {
+    const newStyle = e.target.value;
+    setStyle(newStyle);
+
+    if (instructions.trim()) {
+      const newPrompt = buildCustomPrompt(instructions, newStyle);  // Rebuild prompt with the current instructions and new style
+      setPrompt(newPrompt);  // Update the prompt state
+    }
+  }, [instructions]);
+
   return (
     <CopilotKit publicApiKey={process.env.NEXT_PUBLIC_COHERE_API_KEY}>
       <div className="container">
-          <h1>AI Storyteller</h1>
-          <p className="subtitle">Start writing your ideas, and the AI will assist you.</p>
+        <h1>AI Storyteller</h1>
+        <p className="subtitle">Start writing your ideas, and the AI will assist you.</p>
 
-          <label htmlFor="style">Choose Writing Style:</label>
-          <select id="style" value={style} onChange={handleStyleChange} className="input-box">
-            <option value="formal">Formal Tone</option>
-            <option value="casual">Casual Tone</option>
-            <option value="creative">Creative suggestions</option>
-            <option value="kids">For Kids</option>
-            <option value="sci-fi">Sci-Fi Story</option>
-            <option value="action-movie">Action Movie Scene</option>
-          </select>
+        <label htmlFor="style">Choose Writing Style:</label>
+        <select id="style" value={style} onChange={handleStyleChange} className="input-box">
+          <option value="formal">Formal Tone</option>
+          <option value="casual">Casual Tone</option>
+          <option value="creative">Creative suggestions</option>
+          <option value="kids">For Kids</option>
+          <option value="sci-fi">Sci-Fi Story</option>
+          <option value="action-movie">Action Movie Scene</option>
+        </select>
 
-          {/* Pass the full prompt and content change handler to AIEditor */}
-          <AIEditor prompt={prompt} onContentChange={handleInputChange} />
+        {/* Pass the full prompt and content change handler to AIEditor */}
+        <AIEditor prompt={prompt} onContentChange={handleInputChange} />
       </div>
-        <CopilotSidebar instructions={instructions} defaultOpen={false}>
-        </CopilotSidebar>
+      <CopilotSidebar instructions={instructions} defaultOpen={false} />
     </CopilotKit>
   );
 };
