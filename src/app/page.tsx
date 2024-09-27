@@ -81,7 +81,7 @@ const IndexPage = () => {
         <h1>AI Storyteller</h1>
         <p className="subtitle">Start writing your ideas, and the AI will transform them.</p>
 
-        <label htmlFor="style">Choose your Story's Style:</label>
+        <label htmlFor="style">Choose the style of your next Story:</label>
         <select id="style" value={style} onChange={handleStyleChange} className="input-box">
           <option value="formal">Formal Tone</option>
           <option value="casual">Casual Flow</option>
