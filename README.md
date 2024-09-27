@@ -67,10 +67,9 @@ This will generate the production-ready version of your app inside the .next dir
 - Debounce: To optimize the frequency of API calls.
 
 
-### Future Enhancements
+### New Features
 
-- Improve the AI suggestion generation with additional AI models.
-- Enhance the user interface with more interactive animations and visual effects.
-- Add more writing styles and customization options.
-License
-- This project is licensed under the MIT License - see the LICENSE file for details.
+- Improve the AI suggestion generation with additional instructions in the prompt.
+- Enhance the user interface with an even palette and futuristic classy style.
+- Now the AI response stays around the same lenght of the inputted.
+

@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { debounce } from '../utils/utils';  // Ensure the debounce function is correctly imported
+import { debounce } from '../utils/utils'; // Ensure the debounce function is correctly imported
 import '../styles/globals.css';
 
 const AIEditor = ({ prompt, onContentChange }) => {
@@ -9,9 +9,9 @@ const AIEditor = ({ prompt, onContentChange }) => {
 
   // Debounced API call function
   const fetchSuggestion = async (currentPrompt) => {
-    if (!currentPrompt) return;
+    if (!currentPrompt.trim()) return; // Only proceed if the prompt has non-whitespace characters
 
-    console.log('Fetching suggestion for prompt:', currentPrompt);  // Log the current prompt
+    console.log('Fetching suggestion for prompt:', currentPrompt); // Log the current prompt
     setLoading(true);
     try {
       const response = await fetch('/api/openai', {
@@ -19,7 +19,7 @@ const AIEditor = ({ prompt, onContentChange }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: currentPrompt }),  // Send the prompt in the body
+        body: JSON.stringify({ prompt: currentPrompt }), // Send the prompt in the body
       });
 
       const data = await response.json();
@@ -38,13 +38,13 @@ const AIEditor = ({ prompt, onContentChange }) => {
 
   // Debounce to reduce excessive API calls
   const debouncedFetchSuggestion = useCallback(debounce((currentPrompt) => {
-    fetchSuggestion(currentPrompt);  // Pass the prompt to fetchSuggestion
-  }, 1000), []);  // Empty dependency array, so the debounced function is only created once
+    fetchSuggestion(currentPrompt); // Pass the prompt to fetchSuggestion
+  }, 1000), []); // Empty dependency array, so the debounced function is only created once
 
   // Trigger debounced API call when the prompt changes
   useEffect(() => {
-    if (prompt) {
-      debouncedFetchSuggestion(prompt);  // Call the debounced function with the latest prompt
+    if (prompt.trim()) {
+      debouncedFetchSuggestion(prompt); // Call the debounced function with the latest prompt
     }
   }, [prompt, debouncedFetchSuggestion]);
 
@@ -52,12 +52,12 @@ const AIEditor = ({ prompt, onContentChange }) => {
     <div>
       {/* User input box */}
       <textarea
-        className='textarea'
+        className="textarea"
         placeholder="What's on your mind?"
         value={content}
         onChange={(e) => {
           setContent(e.target.value);
-          onContentChange(e);  
+          onContentChange(e);
         }}
         rows={10}
         cols={50}
