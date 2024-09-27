@@ -1,10 +1,11 @@
 "use client";
 
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { CopilotKit } from '@copilotkit/react-core';
 import { CopilotSidebar } from '@copilotkit/react-ui';
 import AIEditor from '../components/AIEditor';
 import '../styles/globals.css';
+import { placeholderAnimation } from '../placeholderAnimation'; // Import the placeholder animation
 
 // Constant context for every prompt
 const CONTEXT_PROMPT = "Act as a professional storyteller. Ensure the output is creative, grammatically correct, SEO-optimized, and original. Focus on readability and engagement.";
@@ -18,9 +19,14 @@ const getCharacterRangePrompt = (input: string) => {
 };
 
 const IndexPage = () => {
-  const [instructions, setInstructions] = useState(''); 
-  const [style, setStyle] = useState('formal'); 
-  const [prompt, setPrompt] = useState(''); 
+  const [instructions, setInstructions] = useState(''); // State for input text
+  const [style, setStyle] = useState('formal'); // State for writing style
+  const [prompt, setPrompt] = useState(''); // Store the final prompt
+
+  useEffect(() => {
+    // Start the placeholder animation when the component mounts
+    placeholderAnimation();
+  }, []);
 
   // Build a custom prompt based on the selected style
   const buildCustomPrompt = (instructions: string, style: string) => {
@@ -51,7 +57,7 @@ const IndexPage = () => {
     return `${CONTEXT_PROMPT} ${characterRangePrompt} ${stylePrompt}`;
   };
 
-  // Handle input changes (user entry)
+  // Handle input changes (user typing)
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newInstructions = e.target.value;
     setInstructions(newInstructions);
