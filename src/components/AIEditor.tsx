@@ -1,12 +1,11 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { debounce } from '../utils/utils';  // Ensure the debounce function is correctly imported
+import { debounce } from '../utils/utils'; // Ensure the debounce function is correctly imported
 import '../styles/globals.css';
 
 const AIEditor = ({ prompt, onContentChange }) => {
   const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
-  const [lastValidPrompt, setLastValidPrompt] = useState(''); // Store the last meaningful prompt
 
   // Debounced API call function
   const fetchSuggestion = async (currentPrompt) => {
@@ -44,12 +43,10 @@ const AIEditor = ({ prompt, onContentChange }) => {
 
   // Trigger debounced API call when the prompt changes
   useEffect(() => {
-    const trimmedPrompt = prompt.trim(); // Remove all extra spaces
-    if (trimmedPrompt && trimmedPrompt !== lastValidPrompt) { // Only trigger if meaningful change is detected
-      setLastValidPrompt(trimmedPrompt); // Update the last valid prompt
-      debouncedFetchSuggestion(trimmedPrompt); // Call the debounced function with the latest prompt
+    if (prompt.trim()) {
+      debouncedFetchSuggestion(prompt); // Call the debounced function with the latest prompt
     }
-  }, [prompt, debouncedFetchSuggestion, lastValidPrompt]); // Add 'lastValidPrompt' as a dependency
+  }, [prompt, debouncedFetchSuggestion]);
 
   return (
     <div>
