@@ -2,19 +2,19 @@
 
 export function placeholderAnimation() {
     const phrases = [
-      "Write your story here...",
+      "Write your story here!!!",
       "Once upon a time...",
       "In a world far, far away...",
       "The adventure begins...",
-      "What happens next?"
+      "This is a story of..."
     ];
   
     let currentPhraseIndex = 0;
     let isDeleting = false;
     let currentText = '';
     const textArea = document.querySelector('.textarea');
-    const typingSpeed = 150;
-    const deleteSpeed = 100;
+    const typingSpeed = 100;
+    const deleteSpeed = 80;
     const delayBetweenPhrases = 2000;
   
     function typeEffect() {

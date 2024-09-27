@@ -57,6 +57,27 @@ const IndexPage = () => {
     return `${CONTEXT_PROMPT} ${characterRangePrompt} ${stylePrompt}`;
   };
 
+  const getEmojiForStyle = (style: string) => {
+    switch (style) {
+      case 'formal':
+        return '🧐'; // Formal emoji
+      case 'casual':
+        return '😎'; // Casual emoji
+      case 'creative':
+        return '🎨'; // Creative emoji
+      case 'kids':
+        return '🧸'; // For Kids emoji
+      case 'sci-fi':
+        return '🚀'; // Sci-Fi emoji
+      case 'horror':
+        return '👻'; // Horror emoji
+      case 'action-movie':
+        return '🎬'; // Action Movie emoji
+      default:
+        return '💡'; // Default emoji
+    }
+  };  
+
   // Handle input changes (user typing)
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newInstructions = e.target.value;
@@ -86,17 +107,19 @@ const IndexPage = () => {
       <div className="container">
         <h1>AI Storyteller</h1>
         <p className="subtitle">Start writing your ideas, and the AI will transform them.</p>
-
-        <label htmlFor="style">Choose the style of your next Story:</label>
-        <select id="style" value={style} onChange={handleStyleChange} className="input-box">
-          <option value="formal">Formal Tone</option>
-          <option value="casual">Casual Flow</option>
-          <option value="creative">Randomly Creative</option>
-          <option value="kids">For Kids</option>
-          <option value="sci-fi">Sci-Fi Tale</option>
-          <option value="action-movie">Action Movie Scene</option>
-          <option value="horror">Horror Story</option>
-        </select>
+        <div className="style-selector-container">
+          <label htmlFor="style">Choose the style of your next Story:</label>
+          <select id="style" value={style} onChange={handleStyleChange} className="input-box">
+            <option value="formal">Formal Tone</option>
+            <option value="casual">Casual Flow</option>
+            <option value="creative">Randomly Creative</option>
+            <option value="kids">For Kids</option>
+            <option value="sci-fi">Sci-Fi Tale</option>
+            <option value="action-movie">Action Movie Scene</option>
+            <option value="horror">Horror Story</option>
+          </select>
+          <span className="style-emoji">{getEmojiForStyle(style)}</span>
+        </div>
 
         {/* Pass the full prompt and content change handler to AIEditor */}
         <AIEditor prompt={prompt} onContentChange={handleInputChange} />

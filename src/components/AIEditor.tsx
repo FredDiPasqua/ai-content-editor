@@ -63,10 +63,12 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
 
   return (
     <div>
-      {/* User input box */}
+      <div className="input-header">
+        <p className="textarea-instruction">What&apos;s on your mind?</p> {/* Escaped apostrophe */}
+      </div>
       <textarea
         className="textarea"
-        placeholder="What's on your mind?"
+        // placeholder="What's on your mind?"
         value={content}
         onChange={(e) => {
           setContent(e.target.value);
@@ -81,7 +83,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
         {loading && <div className="loading"></div>}
         {suggestion && !loading && (
           <div className="suggestion">
-            <h4>AI Creation:</h4>
+            <h4>Text enhanced for grammar, SEO, and engagement: </h4>
             <p>{suggestion}</p>
           </div>
         )}
