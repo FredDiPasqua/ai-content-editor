@@ -55,6 +55,11 @@ body {
     opacity: 2;
     font-family: cursive;
   }
+
+  option {
+    color: #d9a90c;
+    font-style: bold;
+  }
   
   p.subtitle {
     font-family: 'Roboto', sans-serif, 'Times New Roman', Times, serif;

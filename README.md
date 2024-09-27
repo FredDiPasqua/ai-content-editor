@@ -60,18 +60,19 @@ This will generate the production-ready version of your app inside the .next dir
 
 ### Technologies Used
 
-- React & Next.js: For building the frontend and server-side rendered React app.
-- Cohere API: For AI-powered suggestions based on user input.
-- CopilotKit: For integrating AI copilots into the application.
-- Tailwind CSS: For styling the application.
-- Debounce: To optimize the frequency of API calls.
+- **React & Next.js**: For building the frontend and server-side rendered React app.
+- **Cohere API**: For AI-powered suggestions based on user input.
+- **CopilotKit**: For integrating AI copilots into the application.
+- **Custom CSS**: For styling the application, including animations and glassmorphism effects.
+- **Debounce**: To optimize the frequency of API calls.
 
 
 ### New Features
 
-- Improve the AI suggestion generation with additional instructions in the prompt.
-- Enhance the user interface with an even palette and futuristic classy style.
-- Now the AI text stays around the same lenght of the inputted text.
+- **Improved AI Suggestions**: Enhanced the AI suggestion generation by adding contextual instructions to the prompt, resulting in more relevant and creative outputs.
+- **Responsive UI**: Added animations and a more balanced color palette to improve user experience and visual feedback.
+- **Character-Length Matching**: Ensured that the AI-generated text stays within a range of 15 characters more or less than the user-inputted text for more consistent output length.
+
 
 ## 🚀 Live Demo
 
