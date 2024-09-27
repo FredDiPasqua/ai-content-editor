@@ -2,7 +2,6 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { debounce } from '../utils/utils'; // Ensure the debounce function is correctly imported
 import '../styles/globals.css';
 
-// Define the types for props
 interface AIEditorProps {
   prompt: string;
   onContentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
@@ -12,6 +11,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
   const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
+  const [animating, setAnimating] = useState(false);  // New state for animation
 
   // Debounced API call function
   const fetchSuggestion = async (currentPrompt: string) => {
@@ -19,6 +19,8 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
 
     console.log('Fetching suggestion for prompt:', currentPrompt); // Log the current prompt
     setLoading(true);
+    setAnimating(true);  // Start the animation when debounce starts
+
     try {
       const response = await fetch('/api/openai', {
         method: 'POST',
@@ -39,13 +41,14 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
       setSuggestion('Error connecting to the API');
     } finally {
       setLoading(false);
+      setTimeout(() => setAnimating(false), 1500);  // Stop animation after 1.5s
     }
   };
 
   // Debounce to reduce excessive API calls
   const debouncedFetchSuggestion = useCallback(debounce((currentPrompt: string) => {
     fetchSuggestion(currentPrompt); // Pass the prompt to fetchSuggestion
-  }, 1000), []); // Empty dependency array, so the debounced function is only created once
+  }, 1500), []); // Empty dependency array, so the debounced function is only created once
 
   // Trigger debounced API call when the prompt changes
   useEffect(() => {
@@ -71,15 +74,14 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
 
       {/* AI suggestion box */}
       <div className="suggestions-box">
-        {loading ? (
-          <p>Loading creative AI...</p>
-        ) : (
-          suggestion && (
-            <div className="suggestion">
-              <h4>AI Suggestion:</h4>
-              <p>{suggestion}</p>
-            </div>
-          )
+        {loading && (
+          <div className="loading"></div>  // Add loading animation while fetching
+        )}
+        {suggestion && !loading && (
+          <div className="suggestion">
+            <h4>AI Creation:</h4>
+            <p>{suggestion}</p>
+          </div>
         )}
       </div>
     </div>

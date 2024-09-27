@@ -31,7 +31,7 @@ const IndexPage = () => {
         case 'casual':
           return `Rewrite the following content in a casual tone: ${instructions}`;
         case 'creative':
-          return `Generate creative suggestions for the following content: ${instructions}`;
+          return `Generate a creative random story from the following content: ${instructions}`;
         case 'kids':
           return `Make the following content engaging and simple for kids: ${instructions}`;
         case 'sci-fi':
@@ -79,13 +79,13 @@ const IndexPage = () => {
     <CopilotKit publicApiKey={process.env.NEXT_PUBLIC_COHERE_API_KEY}>
       <div className="container">
         <h1>AI Storyteller</h1>
-        <p className="subtitle">Start writing your ideas, and the AI will assist you.</p>
+        <p className="subtitle">Start writing your ideas, and the AI will transform them.</p>
 
-        <label htmlFor="style">Choose Writing Style:</label>
+        <label htmlFor="style">Choose your Story's Style:</label>
         <select id="style" value={style} onChange={handleStyleChange} className="input-box">
           <option value="formal">Formal Tone</option>
-          <option value="casual">Casual Tone</option>
-          <option value="creative">Creative Suggestions</option>
+          <option value="casual">Casual Flow</option>
+          <option value="creative">Randomly Creative</option>
           <option value="kids">For Kids</option>
           <option value="sci-fi">Sci-Fi Tale</option>
           <option value="action-movie">Action Movie Scene</option>

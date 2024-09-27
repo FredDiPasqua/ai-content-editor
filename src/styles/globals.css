@@ -96,12 +96,38 @@ body {
     border: 1px solid rgba(255, 255, 255, 0.2);
     border-radius: 12px;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    color: #f8f4dd;
+    color: #e8e2be;
+    position: relative;
+    padding: 10px;
+    min-height: 100px;
+    overflow: hidden;
   }
-  
-  .copilotkit-button,
-  .copilotkit-window {
-    display: none !important;
+
+  /* CSS for the loading animation */
+  /* .suggestions-box {
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+  } */
+
+  .loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-color: rgba(76, 64, 7, 0.298);
+    transform: translateY(100%);
+    animation: loadingEffect 1.5s forwards;
   }
+
+  @keyframes loadingEffect {
+    0% {
+      transform: translateY(100%);
+    }
+    100% {
+      transform: translateY(0);
+    }
+  }
+
   
   
