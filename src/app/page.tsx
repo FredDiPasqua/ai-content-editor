@@ -36,6 +36,8 @@ const IndexPage = () => {
           return `Make the following content engaging and simple for kids: ${instructions}`;
         case 'sci-fi':
           return `Turn the following content into a Sci-Fi story: ${instructions}`;
+        case 'horror':
+          return `Turn the following content into a Horror story: ${instructions}`;
         case 'action-movie':
           return `Turn the following content into an action movie scene: ${instructions}`;
         default:
@@ -85,8 +87,9 @@ const IndexPage = () => {
           <option value="casual">Casual Tone</option>
           <option value="creative">Creative Suggestions</option>
           <option value="kids">For Kids</option>
-          <option value="sci-fi">Sci-Fi Story</option>
+          <option value="sci-fi">Sci-Fi Tale</option>
           <option value="action-movie">Action Movie Scene</option>
+          <option value="horror">Horror Story</option>
         </select>
 
         {/* Pass the full prompt and content change handler to AIEditor */}
