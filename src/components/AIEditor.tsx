@@ -2,13 +2,19 @@ import React, { useState, useCallback, useEffect } from 'react';
 import { debounce } from '../utils/utils'; // Ensure the debounce function is correctly imported
 import '../styles/globals.css';
 
-const AIEditor = ({ prompt, onContentChange }) => {
+// Define the types for props
+interface AIEditorProps {
+  prompt: string;
+  onContentChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+}
+
+const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
   const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
 
   // Debounced API call function
-  const fetchSuggestion = async (currentPrompt) => {
+  const fetchSuggestion = async (currentPrompt: string) => {
     if (!currentPrompt.trim()) return; // Only proceed if the prompt has non-whitespace characters
 
     console.log('Fetching suggestion for prompt:', currentPrompt); // Log the current prompt
@@ -37,7 +43,7 @@ const AIEditor = ({ prompt, onContentChange }) => {
   };
 
   // Debounce to reduce excessive API calls
-  const debouncedFetchSuggestion = useCallback(debounce((currentPrompt) => {
+  const debouncedFetchSuggestion = useCallback(debounce((currentPrompt: string) => {
     fetchSuggestion(currentPrompt); // Pass the prompt to fetchSuggestion
   }, 1000), []); // Empty dependency array, so the debounced function is only created once
 

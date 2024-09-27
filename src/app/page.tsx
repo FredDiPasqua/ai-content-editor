@@ -10,7 +10,7 @@ import '../styles/globals.css';
 const CONTEXT_PROMPT = "Act as a professional storyteller. Ensure the output is creative, grammatically correct, SEO-optimized, and original. Focus on readability and engagement.";
 
 // Calculate character range based on input length
-const getCharacterRangePrompt = (input) => {
+const getCharacterRangePrompt = (input: string) => {
   const inputLength = input.length;
   const minLength = Math.max(inputLength - 15, 50); // Minimum length of 50
   const maxLength = inputLength + 15;
@@ -23,7 +23,7 @@ const IndexPage = () => {
   const [prompt, setPrompt] = useState(''); // Store the final prompt
 
   // Build a custom prompt based on the selected style
-  const buildCustomPrompt = (instructions, style) => {
+  const buildCustomPrompt = (instructions: string, style: string) => {
     const stylePrompt = (() => {
       switch (style) {
         case 'formal':
@@ -52,7 +52,7 @@ const IndexPage = () => {
   };
 
   // Handle input changes (user typing)
-  const handleInputChange = useCallback((e) => {
+  const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newInstructions = e.target.value;
     setInstructions(newInstructions);
 
@@ -65,7 +65,7 @@ const IndexPage = () => {
   }, [style]);
 
   // Handle writing style change
-  const handleStyleChange = useCallback((e) => {
+  const handleStyleChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     const newStyle = e.target.value;
     setStyle(newStyle);
 
