@@ -18,9 +18,9 @@ const getCharacterRangePrompt = (input: string) => {
 };
 
 const IndexPage = () => {
-  const [instructions, setInstructions] = useState(''); // State for input text
-  const [style, setStyle] = useState('formal'); // State for writing style
-  const [prompt, setPrompt] = useState(''); // Store the final prompt
+  const [instructions, setInstructions] = useState(''); 
+  const [style, setStyle] = useState('formal'); 
+  const [prompt, setPrompt] = useState(''); 
 
   // Build a custom prompt based on the selected style
   const buildCustomPrompt = (instructions: string, style: string) => {
@@ -51,7 +51,7 @@ const IndexPage = () => {
     return `${CONTEXT_PROMPT} ${characterRangePrompt} ${stylePrompt}`;
   };
 
-  // Handle input changes (user typing)
+  // Handle input changes (user entry)
   const handleInputChange = useCallback((e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const newInstructions = e.target.value;
     setInstructions(newInstructions);

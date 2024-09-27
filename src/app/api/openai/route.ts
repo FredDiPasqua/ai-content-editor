@@ -13,7 +13,7 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: 'Prompt is required' }, { status: 400 });
     }
 
-    const apiKey = process.env.COHERE_API_KEY;  // API KEY validation
+    const apiKey = process.env.COHERE_API_KEY; 
     if (!apiKey) {
       console.log('Cohere API key not set');
       return NextResponse.json({ error: 'API key not set' }, { status: 500 });

@@ -71,5 +71,5 @@ This will generate the production-ready version of your app inside the .next dir
 
 - Improve the AI suggestion generation with additional instructions in the prompt.
 - Enhance the user interface with an even palette and futuristic classy style.
-- Now the AI response stays around the same lenght of the inputted.
+- Now the AI text stays around the same lenght of the inputted text.
 

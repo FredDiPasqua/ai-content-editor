@@ -1,5 +1,5 @@
 import React, { useState, useCallback, useEffect } from 'react';
-import { debounce } from '../utils/utils'; // Ensure the debounce function is correctly imported
+import { debounce } from '../utils/utils'; 
 import '../styles/globals.css';
 
 interface AIEditorProps {
@@ -11,7 +11,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
   const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
-  const [lastValidPrompt, setLastValidPrompt] = useState(''); // Track last valid prompt
+  const [lastValidPrompt, setLastValidPrompt] = useState(''); 
 
   // Debounced API call function
   const fetchSuggestion = async (currentPrompt: string) => {
@@ -43,7 +43,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
     }
   };
 
-  // Debounce to reduce excessive API calls
+  // Delay to reduce excessive API calls
   const debouncedFetchSuggestion = useCallback(
     debounce((currentPrompt: string) => {
       fetchSuggestion(currentPrompt);
@@ -51,7 +51,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
     []
   );
 
-  // Trigger debounced API call when the prompt changes, only if it differs from the last valid prompt
+  // Trigger debounced API call when the prompt changes, only if it's different from the last valid prompt
   useEffect(() => {
     const trimmedPrompt = prompt.trim();
 
