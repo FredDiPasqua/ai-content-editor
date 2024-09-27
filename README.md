@@ -73,3 +73,9 @@ This will generate the production-ready version of your app inside the .next dir
 - Enhance the user interface with an even palette and futuristic classy style.
 - Now the AI response stays around the same lenght of the inputted.
 
+## 🚀 Live Demo
+
+Check out the live version of the AI Storyteller App:
+
+👉 [Click here to visit](https://ai-content-editor.vercel.app/)
+

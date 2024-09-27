@@ -19,7 +19,7 @@ body {
     margin: 2rem auto;
     background: rgba(92, 86, 48, 0.15);
     border-radius: 16px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 8px 20px rgba(69, 58, 3, 0.464);
     backdrop-filter: blur(20px);
     border: 1px solid rgba(255, 255, 255, 0.2);
     animation: float 5s ease-in-out infinite;
@@ -44,12 +44,19 @@ body {
   h1 {
     /* font-family: 'Playfair Display', serif; */
     font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    /* font-family: 'Courier New', Courier, monospace; */
     letter-spacing: 0.3cap;
     font-size: 3.5rem;
-    background: linear-gradient(to top, #5275dd, #d9a90c);
+    background: linear-gradient(to top, #d9a90c, #5275dd );
     -webkit-background-clip: text;
     color: transparent;
     text-align: center;
+  }
+
+  label {
+    color: #d9a90c;
+    opacity: 2;
+    font-family: cursive;
   }
   
   /* Styling for the subtitle */
@@ -57,7 +64,7 @@ body {
     font-family: 'Roboto', sans-serif, 'Times New Roman', Times, serif;
     font-size: 1.2rem;
     text-align: center;
-    color: #ddd;
+    color: #d9a90cb5;
     margin-bottom: 1.5rem;
     font-style: italic;
   }
