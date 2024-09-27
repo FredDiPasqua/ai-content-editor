@@ -11,15 +11,14 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
   const [content, setContent] = useState('');
   const [suggestion, setSuggestion] = useState('');
   const [loading, setLoading] = useState(false);
-  const [animating, setAnimating] = useState(false);  // New state for animation
+  const [lastValidPrompt, setLastValidPrompt] = useState(''); // Track last valid prompt
 
   // Debounced API call function
   const fetchSuggestion = async (currentPrompt: string) => {
-    if (!currentPrompt.trim()) return; // Only proceed if the prompt has non-whitespace characters
+    if (!currentPrompt.trim()) return;
 
-    console.log('Fetching suggestion for prompt:', currentPrompt); // Log the current prompt
+    console.log('Fetching suggestion for prompt:', currentPrompt);
     setLoading(true);
-    setAnimating(true);  // Start the animation when debounce starts
 
     try {
       const response = await fetch('/api/openai', {
@@ -27,7 +26,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ prompt: currentPrompt }), // Send the prompt in the body
+        body: JSON.stringify({ prompt: currentPrompt }),
       });
 
       const data = await response.json();
@@ -41,21 +40,26 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
       setSuggestion('Error connecting to the API');
     } finally {
       setLoading(false);
-      setTimeout(() => setAnimating(false), 1500);  // Stop animation after 1.5s
     }
   };
 
   // Debounce to reduce excessive API calls
-  const debouncedFetchSuggestion = useCallback(debounce((currentPrompt: string) => {
-    fetchSuggestion(currentPrompt); // Pass the prompt to fetchSuggestion
-  }, 1500), []); // Empty dependency array, so the debounced function is only created once
+  const debouncedFetchSuggestion = useCallback(
+    debounce((currentPrompt: string) => {
+      fetchSuggestion(currentPrompt);
+    }, 1500),
+    []
+  );
 
-  // Trigger debounced API call when the prompt changes
+  // Trigger debounced API call when the prompt changes, only if it differs from the last valid prompt
   useEffect(() => {
-    if (prompt.trim()) {
-      debouncedFetchSuggestion(prompt); // Call the debounced function with the latest prompt
+    const trimmedPrompt = prompt.trim();
+
+    if (trimmedPrompt && trimmedPrompt !== lastValidPrompt) {
+      setLastValidPrompt(trimmedPrompt); // Update last valid prompt
+      debouncedFetchSuggestion(trimmedPrompt); // Fetch new suggestion
     }
-  }, [prompt, debouncedFetchSuggestion]);
+  }, [prompt, debouncedFetchSuggestion, lastValidPrompt]);
 
   return (
     <div>
@@ -74,9 +78,7 @@ const AIEditor: React.FC<AIEditorProps> = ({ prompt, onContentChange }) => {
 
       {/* AI suggestion box */}
       <div className="suggestions-box">
-        {loading && (
-          <div className="loading"></div>  // Add loading animation while fetching
-        )}
+        {loading && <div className="loading"></div>}
         {suggestion && !loading && (
           <div className="suggestion">
             <h4>AI Creation:</h4>
